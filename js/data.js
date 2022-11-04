@@ -38,7 +38,7 @@ const createDescriptionPhoto = () => {
   const id = getPhotoId(); // Константа нужна, чтобы использовать в двух местаъ один id (нужно по заданию);
   return {
     id: id,
-    url: `photos/${id}`,
+    url: `photos/${id}.jpg`,
     description: getRandomElement(descriptions),
     likes: getRandomPositiveInteger(15, 200),
     comments: Array.from({ length: getRandomPositiveInteger(1, 5) }, createComment)
