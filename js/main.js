@@ -1,6 +1,7 @@
 import { createDescriptionPhoto } from './data.js';
 import { createPhotoElement } from './photo.js';
 import { showBigPicture } from './big-picture.js';
+import './form.js';
 
 const photoDescriptions = Array.from({ length: 25 }, createDescriptionPhoto);
 
