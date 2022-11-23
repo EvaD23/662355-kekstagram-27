@@ -1,3 +1,4 @@
+const ALERT_SHOW_TIME = 4000;
 
 /**
  * @param {string} str
@@ -34,5 +35,29 @@ const getCounterFn = () => {
 
 const getRandomElement = (array) => array[getRandomPositiveInteger(0, array.length - 1)];
 
+const showAlert = (message) => {
+  const alertContainer = document.createElement('div');
+  alertContainer.classList.add('modal-alert');
+  alertContainer.textContent = message;
+  document.body.append(alertContainer);
 
-export { getRandomPositiveInteger, isCorrectLength, getCounterFn, getRandomElement };
+  setTimeout(() => {
+    alertContainer.remove();
+  }, ALERT_SHOW_TIME);
+};
+
+const shuffle = (unshuffled) => unshuffled
+  .map((value) => ({ value, sort: Math.random() }))
+  .sort((a, b) => a.sort - b.sort)
+  .map(({ value }) => value);
+
+const debounce = (callback, timeoutDelay = 500) => {
+  let timeoutId;
+  return (...rest) => {
+    clearTimeout(timeoutId);
+    timeoutId = setTimeout(() => callback.apply(this, rest), timeoutDelay);
+  };
+};
+
+
+export { getRandomPositiveInteger, isCorrectLength, getCounterFn, getRandomElement, showAlert, shuffle, debounce };

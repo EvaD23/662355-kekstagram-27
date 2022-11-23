@@ -1405,6 +1405,19 @@ main {
   overflow: hidden;
 }
 
+.modal-alert {
+  z-index: 100;
+  position: absolute;
+  left: 0;
+  top: 0;
+  right: 0;
+  padding: 10px 3px;
+  font-size: 25px;
+  text-align: center;
+  background-color: #DC143C;
+  font-family: Roboto;
+}
+
 .hidden {
   display: none;
 }

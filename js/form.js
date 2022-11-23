@@ -1,5 +1,10 @@
+import { sendForm } from './api.js';
+import { showSuccessMessage, showErrorMessage } from './messages.js';
+
 const REGEXP_HASHTAG = /^#[a-zа-яё0-9]{1,19}$/i; // начинается с #, содержит только русские и английские буквы и цифры, длина от 2 до 20 символов
 const MAX_COUNT_HASHTAGS = 5;
+
+const FILE_TYPES = ['jpg', 'jpeg', 'png'];
 
 const imgEditor = document.querySelector('.img-upload__overlay');
 const uploadElement = document.querySelector('#upload-file');
@@ -17,6 +22,7 @@ const sliderElement = document.querySelector('.effect-level__slider');
 const buttonsEffect = document.querySelectorAll('.effects__radio:not(#effect-none)');
 const filterValue = document.querySelector('.effect-level__value');
 const sliderContainer = document.querySelector('.img-upload__effect-level');
+const effectImgs = document.querySelectorAll('.effects__preview');
 
 
 const showImgEditor = () => {
@@ -25,8 +31,19 @@ const showImgEditor = () => {
   sliderContainer.classList.add('hidden');
 };
 
+const checkFileTypes = (fileName) => FILE_TYPES.some((type) => fileName.toLowerCase().endsWith(type));
+
+
 uploadElement.addEventListener('change', () => {
-  showImgEditor();
+  const file = uploadElement.files[0];
+  if (checkFileTypes(file.name)) {
+    showImgEditor();
+    const imgUrl = URL.createObjectURL(file);
+    scaleImg.src = imgUrl;
+    effectImgs.forEach((img) => {
+      img.style.backgroundImage = `url(${imgUrl})`;
+    });
+  }
 });
 
 const changeScale = (scale) => {
@@ -119,11 +136,19 @@ commentsElement.addEventListener('keydown', (evt) => {
   }
 });
 
+
 uploadForm.addEventListener('submit', (evt) => {
   evt.preventDefault();
 
-  pristine.validate();
+  if (pristine.validate()) {
+    const formData = new FormData(evt.target);
+    sendForm(formData, () => {
+      showSuccessMessage();
+      closeImgEditor();
+    }, showErrorMessage);
+  }
 });
+
 
 buttonControlSmall.addEventListener('click', () => {
   let scaleValue = +scaleElement.value.slice(0, -1); // Сделать масштаб картинки меньше
@@ -267,5 +292,3 @@ sliderElement.noUiSlider.on('change', (values) => {
     }
   }
 });
-
-
